@@ -1,3 +1,3 @@
 CREATE TABLE t2 (
-   "id" INTEGER
+   "id" INTEGER NOT NULL
 );
