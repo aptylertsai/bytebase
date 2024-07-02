@@ -1,3 +1,0 @@
-CREATE TABLE t4 (
-   "id" INTEGER PRIMARY KEY
-);
