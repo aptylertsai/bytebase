@@ -1,3 +1,3 @@
 CREATE TABLE t4 (
-   "id" INTEGER
+   "id" INTEGER PRIMARY KEY
 );
