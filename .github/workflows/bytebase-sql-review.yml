@@ -27,7 +27,7 @@ jobs:
           service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
       - name: Review
         id: review
-        uses: ./.github/actions/sql-review
+        uses:  bytebase/github-action-example/.github/actions/sql-review@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: "sql/*.sql"
