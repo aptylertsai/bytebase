@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Login to Bytebase
         id: login
-        uses: ./.github/actions/login
+        uses: https://github.com/bytebase/github-action-example/tree/main/.github/actions/login
         with:
           url: ${{ env.BYTEBASE_URL }}
           service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
