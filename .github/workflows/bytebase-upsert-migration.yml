@@ -18,7 +18,7 @@ jobs:
       BYTEBASE_URL: "https://cb3f-211-23-26-37.ngrok-free.app"
       BYTEBASE_SERVICE_ACCOUNT: "github@service.bytebase.com"
       DATABASE: "instances/prod-sample-instance/databases/hr_prod"
-      PROJECT: "db"
+      PROJECT: "prod-db"
       ISSUE_TITLE: "[${{ github.repository }}#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
       DESCRIPTION: "Triggered by ${{ github.event.repository.html_url }}/pull/${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
     name: Upsert Migration
