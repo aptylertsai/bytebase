@@ -1,1 +1,1 @@
-CREATE TABLE public.test_table(id INT PRIMARY KEY)
+CREATE TABLE public.test_table(id INT PRIMARY KEY, created_ts TIMESTAMP, creator_id INT, updated_ts TIMESTAMP, updater_id INT)
