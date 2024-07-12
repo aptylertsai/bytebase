@@ -1,1 +1,1 @@
-CREATE TABLE public.t5(id INT PRIMARY KEY)
+CREATE TABLE public.test_table(id INT PRIMARY KEY)
