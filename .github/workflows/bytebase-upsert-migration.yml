@@ -3,34 +3,40 @@ name: Upsert Migration
 on:
   pull_request_review:
     types: [submitted]
-  # pull_request:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - "**/*.up.sql"
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - "sql/*.sql"
 
 jobs:
   bytebase-upsert-migration:
     runs-on: ubuntu-latest
     # Runs only if PR is approved and target branch is main
-    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main'
+    # if: github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main'
+    if: github.event.review.state == 'approved'
     env:
-      BYTEBASE_URL: "https://cb3f-211-23-26-37.ngrok-free.app"
-      BYTEBASE_SERVICE_ACCOUNT: "github@service.bytebase.com"
-      DATABASE: "instances/prod-sample-instance/databases/hr_prod"
-      PROJECT: "prod-db"
       ISSUE_TITLE: "[${{ github.repository }}#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
       DESCRIPTION: "Triggered by ${{ github.event.repository.html_url }}/pull/${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
     name: Upsert Migration
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set environment based on branch
+        id: set-env
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+            echo "ENVIRONMENT=alpha" >> $GITHUB_ENV
+          fi  
       - name: Login to Bytebase
         id: login
         uses: bytebase/github-action-example/.github/actions/login@main
         with:
-          url: ${{ env.BYTEBASE_URL }}
-          service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
+          url: ${{ vars.BYTEBASE_URL }}
+          service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT }}
           service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
       - name: Upsert issue
         id: upsert
@@ -38,10 +44,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: "sql/*.sql"
-          url: ${{ env.BYTEBASE_URL }}
+          url: ${{ vars.BYTEBASE_URL }}
           token: ${{ steps.login.outputs.token }}
           headers: '{"Accept-Encoding": "deflate, gzip"}'
-          project-id: ${{ env.PROJECT }}
+          project-id: ${{ vars.BYTEBASE_PROJECT }}
           database: ${{ env.DATABASE }}
           title: ${{ env.ISSUE_TITLE }}
           description: ${{ env.DESCRIPTION }}
