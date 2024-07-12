@@ -27,14 +27,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Login to Bytebase
         id: login
-        uses: ./.github/actions/login
+        uses: bytebase/github-action-example/.github/actions/login@main
         with:
           url: ${{ env.BYTEBASE_URL }}
           service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
           service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
       - name: Upsert issue
         id: upsert
-        uses: ./.github/actions/upsert-issue
+        uses: bytebase/github-action-example/.github/actions/upsert-issue@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: "sql/*.sql"

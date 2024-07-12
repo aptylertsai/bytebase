@@ -21,14 +21,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Login to Bytebase
         id: login
-        uses: ./.github/actions/login
+        uses: bytebase/github-action-example/.github/actions/login@main
         with:
           url: ${{ env.BYTEBASE_URL }}
           service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
           service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
       - name: Check Issue Status
         id: check
-        uses: ./.github/actions/check-issue-status
+        uses: bytebase/github-action-example/.github/actions/check-issue-status@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: "sql/*.sql"
