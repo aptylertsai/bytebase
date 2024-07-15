@@ -16,16 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Print branch
-        run: echo "Branch is ${{ github.ref }}"
+        run: echo "Branch is ${{ github.event.pull_request.base.ref }}"
       - name: Set environment based on branch
         id: set-env
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          if [[ "${{ github.event.pull_request.base.ref }}" == "refs/heads/main" ]]; then
             echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "ENVIRONMENT=alpha" >> $GITHUB_ENV
           else
-            echo "ENVIRONMENT=unknown" >> $GITHUB_ENV
+            echo "ENVIRONMENT=alpha" >> $GITHUB_ENV
           fi
       - name: Print environment
         run: echo "Environment is ${{ env.ENVIRONMENT }}"
