@@ -12,17 +12,10 @@ jobs:
   bytebase-sql-review:
     runs-on: ubuntu-latest
     name: SQL Review
+    environment: ${{ github.event.pull_request.base.ref == 'master' && 'prod' || 'alpha' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set environment based on branch
-        id: set-env
-        run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-            echo "ENVIRONMENT=alpha" >> $GITHUB_ENV
-          fi
       - name: Login to Bytebase
         id: login
         uses: bytebase/github-action-example/.github/actions/login@main
@@ -39,4 +32,4 @@ jobs:
           url: ${{ vars.BYTEBASE_URL }}
           token: ${{ steps.login.outputs.token }}
           headers: '{"Accept-Encoding": "deflate, gzip"}'
-          database: ${{ env.DATABASE }}
+          database: ${{ vars.DATABASE }}

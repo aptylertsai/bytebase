@@ -20,17 +20,10 @@ jobs:
       ISSUE_TITLE: "[${{ github.repository }}#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
       DESCRIPTION: "Triggered by ${{ github.event.repository.html_url }}/pull/${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
     name: Upsert Migration
+    environment: ${{ github.event.pull_request.base.ref == 'master' && 'prod' || 'alpha' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set environment based on branch
-        id: set-env
-        run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-            echo "ENVIRONMENT=alpha" >> $GITHUB_ENV
-          fi  
       - name: Login to Bytebase
         id: login
         uses: bytebase/github-action-example/.github/actions/login@main
@@ -48,6 +41,6 @@ jobs:
           token: ${{ steps.login.outputs.token }}
           headers: '{"Accept-Encoding": "deflate, gzip"}'
           project-id: ${{ vars.BYTEBASE_PROJECT }}
-          database: ${{ env.DATABASE }}
+          database: ${{ vars.DATABASE }}
           title: ${{ env.ISSUE_TITLE }}
           description: ${{ env.DESCRIPTION }}
