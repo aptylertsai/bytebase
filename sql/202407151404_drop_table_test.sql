@@ -1,1 +1,1 @@
-DROP TABLE public.test_del
+DROP TABLE IF EXISTS public.test_del
