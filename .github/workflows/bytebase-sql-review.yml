@@ -12,7 +12,7 @@ jobs:
   bytebase-sql-review:
     runs-on: ubuntu-latest
     name: SQL Review
-    environment: ${{ github.event.pull_request.base.ref == 'master' && 'prod' || 'alpha' }}
+    environment: ${{ github.event.pull_request.base.ref == 'main' && 'prod' || 'alpha' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
